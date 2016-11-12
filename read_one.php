@@ -1,5 +1,5 @@
 <?php
-
+//test comment
 include_once('config/database.php');
 include_once('config/product.php');
 
