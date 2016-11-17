@@ -18,7 +18,7 @@
         <table>
           <thead><th>ID</th><th>Name</th><th>Description</th><th>Price</th><th></th><th></th></thead>
           <tbody>
-            <tr ng-repeat="name in names | filter:search"><td>{{ name.id }}</td><td>{{ name.name }}</td><td>{{ name.description }}</td><td>{{ name.price }}</td><td class="edit-button"><a href="#edit" ng-click="readOne(name.id)">Edit</a></td><td class="delete-button"><a href="#delete" ng-click="deleteProduct(name.id)">Delete</a></td></tr>
+            <tr ng-repeat="name in names | filter:search"><td>{{ name.id }}</td><td>{{ name.name }}</td><td>{{ name.description }}</td><td>${{ name.price }}</td><td class="edit-button"><a href="#edit" ng-click="readOne(name.id)">Edit</a></td><td class="delete-button"><a href="#delete" ng-click="deleteProduct(name.id)">Delete</a></td></tr>
           </tbody>
         </table>
         <div class="form-container">
