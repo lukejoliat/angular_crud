@@ -56,7 +56,7 @@
                 </div>
             </div>
         <div class="fixed-action-btn" style="bottom:45px; right:24px;">
-          <a class="waves-effect waves-light btn modal-trigger btn-floating btn-large red" href="#modal-product-form">
+          <a class="waves-effect waves-light btn modal-trigger btn-floating btn-large red" href="#modal-product-form" ng-click="clearModal()">
             <i class="large material-icons" style="background: #BA2B20;">add</i>
           </a>
         </div>
@@ -70,41 +70,59 @@
     var myApp = angular.module('myApp', []);
         
     myApp.controller('mainController', function ($scope, $http) {
+      
+      $scope.clearModal = function() {
+        $scope.name = '';
+        $scope.description = '';
+        $scope.price = '';
+      }
                   
       $scope.deleteProduct = function(id) {
         $http.post("delete_product.php", { 'id' : id }).success(function(response){
           console.log(response.records);
+          $http.get("read_all.php").success(function(response){
+            $scope.names = response.records;
+          });
         });
       }
-      
-      $scope.getProfile = function () {
-        $http.get('https://teamtreehouse.com/chalkers.json').success(function(response){
-          console.log(response);
-        });
-      }
-      
-      $scope.getProfile();
-      
-      $http.get("read_all.php").success(function(response){
-          $scope.names = response.records;
-      });
       
       $scope.readOne = function(id) {
         $http.post("read_one.php", { 'id' : id }).success(function(response) {
           $scope.name = response[0].name;
           $scope.description = response[0].description;
           $scope.price = response[0].price;
-          //console.log(response);
+          $scope.id = response[0].id;
+          console.log(response);
         }).success(function(){
           $('#modal-product-form').openModal();
         });
       }
       
-      $scope.editProduct = function () {
+      $scope.createProduct = function () {
         $http.post("create_product.php", {'name' : $scope.name, 'description' : $scope.description, 'price' : $scope.price }).success(function(response){
           console.log(response);
+          $http.get("read_all.php").success(function(response){
+            $scope.names = response.records;
+            $('#modal-product-form').closeModal();
+          });
         });
       }
+      
+      $scope.updateProduct = function () {
+        $http.post("update_product.php", {'id' : $scope.id, 'name' : $scope.name, 'description' : $scope.description, 'price' : $scope.price }).success(function(response){
+          console.log(response);
+          //update feed
+          $http.get("read_all.php").success(function(response){
+            $scope.names = response.records;
+          });
+          $('#modal-product-form').closeModal();
+          $scope.clearModal();
+        });
+      }
+      
+      $http.get("read_all.php").success(function(response){
+          $scope.names = response.records;
+      });
       
     });
     

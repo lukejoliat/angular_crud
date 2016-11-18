@@ -44,7 +44,36 @@ class Product {
     $stmt->bindParam(':price', $this->price, PDO::PARAM_STR, 100);
     $stmt->execute();
     return $stmt;
-  }  
+  }
+  
+  function updateProduct(){
+
+      // update query
+      $query = "UPDATE 
+                  " . $this->table_name . "
+              SET 
+                  name = :name, 
+                  price = :price, 
+                  description = :description 
+              WHERE
+                  id = :id";
+
+      // prepare query statement
+      $stmt = $this->conn->prepare($query);
+
+      // bind new values
+      $stmt->bindParam(':name', $this->name);
+      $stmt->bindParam(':price', $this->price);
+      $stmt->bindParam(':description', $this->description);
+      $stmt->bindParam(':id', $this->id);
+
+      // execute the query
+      if($stmt->execute()){
+          return true;
+      }else{
+          return false;
+      }
+  }
 }
 
 ?>
